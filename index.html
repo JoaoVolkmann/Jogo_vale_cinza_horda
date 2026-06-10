@@ -280,6 +280,7 @@ gc.addEventListener('mousemove', e => {
   mousePos.y = e.clientY - r.top;
 });
 gc.addEventListener('click', e => {
+  if(_paused) return;
   const r = gc.getBoundingClientRect();
   onAttack(e.clientX - r.left, e.clientY - r.top);
 });
@@ -428,6 +429,7 @@ let fireZones=[];
 let G={};
 
 function restartGame(){
+  _paused=false;
   document.getElementById('modal').style.display='none';
   document.getElementById('bonusOverlay').classList.remove('show');
   document.getElementById('clearOverlay').classList.remove('show');
@@ -579,6 +581,7 @@ function spawnEnemy(typeOverride){
 
 // ── UPDATE ────────────────────────────────────────────────────
 function update(dt){
+  if(_paused) return;
   if(G.phase!=='wave') return;
   G.tick++;
   G.elapsed+=dt;
@@ -1917,6 +1920,7 @@ function drawCooldownBars(){
 //   GAME LOOP
 // ══════════════════════════════════════════════════════════════
 let _gameStarted=false;
+let _paused=false;
 let lastTs=0;
 
 function gameLoop(ts){
@@ -1929,6 +1933,7 @@ function gameLoop(ts){
 
 // ── BOOT ─────────────────────────────────────────────────────
 restartGame();
+_paused=true;
 
 document.getElementById('m-title').textContent = 'VALE CINZA: HORDA';
 document.getElementById('m-body').textContent =
